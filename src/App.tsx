@@ -51,7 +51,7 @@ function App() {
         setLoadingSubscribe(true)
         try {
             const subscription = await getSubscription();
-            await axios.post('http://192.168.1.36:3000/subscribe', {
+            await axios.post('https://cf21-1-55-202-175.ngrok-free.app/subscribe', {
                 subscription: subscription,
                 id: subscribeId
             })
@@ -68,7 +68,7 @@ function App() {
         e.preventDefault();
         setLoadingPush(true)
         try {
-            await axios.post('http://192.168.1.36:3000/send', {
+            await axios.post('https://cf21-1-55-202-175.ngrok-free.app/send', {
                 message,
                 title,
                 id: pushId

@@ -20,13 +20,13 @@ self.addEventListener('notificationclick', function(event) {
             for (let i = 0; i < clientList.length; i++) {
                 let client = clientList[i];
                 // Check if the window is already open with the desired URL
-                if (client.url === 'http://localhost:3001/' && 'focus' in client) {
+                if (client.url === 'https://react-pwa-notification.vercel.app/' && 'focus' in client) {
                     return client.focus();
                 }
             }
             // If the window isn't already open, open a new one
             if (clients.openWindow) {
-                return clients.openWindow('http://localhost:3001/');
+                return clients.openWindow('https://react-pwa-notification.vercel.app/');
             }
         })
     );
