@@ -10,13 +10,21 @@ import { QRCode, QRSvg } from 'sexy-qr';
 
 // in PROD use from .env
 const PUBLIC_KEY = 'BPLYWTHEplFjMQlUkIzXEzq1jIja6-Q0quAajJbhxPYchWhaOqP_2YVu0DhITXqSmoUKlp7i-W8pEv2RqmK4qxE';
+const BASE_URL = 'https://f187-1-55-202-175.ngrok-free.app/push';
+
+const axiosClient = axios.create({
+    baseURL: BASE_URL,
+})
 
 function App() {
     const [loadingSubscribe, setLoadingSubscribe] = useState<boolean>(false)
     const [loadingPush, setLoadingPush] = useState<boolean>(false)
     const [pushId, setPushId] = useState<string>('');
-    const [message, setMessage] = useState<string>('World');
-    const [title, setTitle] = useState<string>('Hello');
+    const [message, setMessage] = useState<string>('Y Le');
+    const [title, setTitle] = useState<string>('Incomming call');
+    const [apiKey, setApiKey] = useState<string>('apiKey');
+    const [sessionId, setSessionId] = useState<string>('sessionId');
+    const [token, setToken] = useState<string>('token');
     const [subscribeId, setSubscribeId] = useState<string>('');
     const [showSubscribe, setShowSubscribe] = useState<boolean>(true)
 
@@ -51,7 +59,7 @@ function App() {
         setLoadingSubscribe(true)
         try {
             const subscription = await getSubscription();
-            await axios.post('https://cf21-1-55-202-175.ngrok-free.app/subscribe', {
+            await axiosClient.post('/subscribe', {
                 subscription: subscription,
                 id: subscribeId
             })
@@ -67,11 +75,19 @@ function App() {
     const onSubmitPush = useCallback(async (e: React.FormEvent) => {
         e.preventDefault();
         setLoadingPush(true)
+        console.log(
+            apiKey,
+            sessionId,
+            token
+        )
         try {
-            await axios.post('https://cf21-1-55-202-175.ngrok-free.app/send', {
+            await axiosClient.post('/send', {
                 message,
                 title,
-                id: pushId
+                id: pushId,
+                apiKey,
+                sessionId,
+                token
             })
             toast.success('Push success');
         } catch (e) {
@@ -79,7 +95,7 @@ function App() {
         } finally {
             setLoadingPush(false)
         }
-    }, [pushId, message, title]);
+    }, [message, title, pushId, apiKey, sessionId, token]);
 
     const onChange = useCallback((setState: React.Dispatch<React.SetStateAction<string>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
         setState(e.target.value);
@@ -123,6 +139,9 @@ function App() {
                                    onChange={onChange(setPushId)}/>
                         <TextInput id="title" placeholder="title" value={title} onChange={onChange(setTitle)}/>
                         <TextInput id="message" placeholder="message" value={message} onChange={onChange(setMessage)}/>
+                        <TextInput id="apiKey" placeholder="api key" value={apiKey} onChange={onChange(setApiKey)}/>
+                        <TextInput id="sessionId" placeholder="sessionId" value={sessionId} onChange={onChange(setSessionId)}/>
+                        <TextInput id="token" placeholder="token" value={token} onChange={onChange(setToken)}/>
                         <button className={loadingPush ? 'loading' : ''}  type="submit">Send</button>
                     </form>
                 </div>}
