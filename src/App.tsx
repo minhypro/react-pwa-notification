@@ -10,7 +10,7 @@ import { QRCode, QRSvg } from 'sexy-qr';
 
 // in PROD use from .env
 const PUBLIC_KEY = 'BPLYWTHEplFjMQlUkIzXEzq1jIja6-Q0quAajJbhxPYchWhaOqP_2YVu0DhITXqSmoUKlp7i-W8pEv2RqmK4qxE';
-const BASE_URL = 'https://f187-1-55-202-175.ngrok-free.app/push';
+const BASE_URL = 'https://2421-113-166-214-116.ngrok-free.app/push';
 
 const axiosClient = axios.create({
     baseURL: BASE_URL,
